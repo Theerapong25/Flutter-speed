@@ -1,0 +1,35 @@
+function onOpen() {
+const ui = SpreadsheetApp.getUi();
+ui.createMenu("Firebase Tools")
+.addItem("Import Sensor Data", "importDataFromFirebase")
+.addToUi();
+}
+
+function importDataFromFirebase() {
+
+const firebaseURL = "https://iotspeed-73afe-default-rtdb.asia-southeast1.firebasedatabase.app/sensorData.json";
+
+let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("sensorData");
+
+if (!sheet) {
+sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet("sensorData");
+}
+
+const response = UrlFetchApp.fetch(firebaseURL);
+const data = JSON.parse(response.getContentText());
+
+let newEntries = [];
+
+for (let entryId in data) {
+const entry = data[entryId];
+sheet.appendRow([entryId, entry.speed, entry.status]);
+
+}
+function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu("Firebase Tools")
+    .addItem("Import Sensor Data", "importDataFromFirebase")
+    .addToUi();
+}
+}
+
